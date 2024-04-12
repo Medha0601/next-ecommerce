@@ -6,10 +6,13 @@ import Loader from "../components/Loader";
 import ProductItem from "./ProductItem";
 import Link from "next/link";
 import { HiShoppingCart } from "react-icons/hi";
+import { DebounceFunction } from "../types/debounce";
 
 export default function Product() {
   const [products, setProducts] = useState<ProductType[]>([]);
-
+  const [searchVal, setSearchVal] = useState<String | null>("")
+  
+  
   useEffect(() => {
     getProductData()
       .then((data: ProductType[]) => {
@@ -19,21 +22,42 @@ export default function Product() {
         console.error("Error in fetching product data", error);
       });
   }, []);
+
+  // FUNCTION TO REDUCE TITLE NAME
   const truncateTitle = (text: string, maxWords: number) => {
     const words = text.split(" ");
     if (words.length > maxWords) {
       return words.slice(0, maxWords).join(" ") + "...";
     } else return text;
   };
-  console.log(products);
 
+  const handleSearchChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+      setSearchVal(e.target.value)
+  }
+
+  const debounce: DebounceFunction<(...args: any[]) => any> = (func, delay) => {
+    let debounceTimer: ReturnType<typeof setTimeout>;
+  
+    return function(...args: Parameters<typeof func>) {
+      const context = this as unknown as ThisParameterType<typeof func>;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+  };
+
+  const filteredProduct = products.filter((product:ProductType) => product.title.toLowerCase().includes(searchVal?.toLowerCase()))
   return (
+    <>
+    <div className=" flex ml-7">
+      <input placeholder="search" className=" bg-slate-500 ring-1 pl-5" value={searchVal} onChange={handleSearchChange} />
+
+    </div>
     <div className="container mx-auto p-4">
       {products.length === 0 ? (
         <Loader />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {products.map((product: ProductType) => (
+          {filteredProduct.map((product: ProductType) => (
             <Link
               href={`Products/${product.id}`}
               className="group"
@@ -63,5 +87,6 @@ export default function Product() {
         </div>
       )}
     </div>
+      </>
   );
 }
