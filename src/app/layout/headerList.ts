@@ -5,20 +5,24 @@ import { HiHome } from "react-icons/hi2";
 export interface headerListType {
     
         name: string,
-        Icon: IconType
+        routeName?: string
+        Icon: IconType,
     
 }
   const headerList: headerListType[] = [
     {
         name: "HOME",
+        routeName: "/",
         Icon:  HiHome
     },
     {
-        name: 'SEARCH',
+        name: 'PRODUCTS',
+        routeName: "Products",
         Icon: HiOutlineSearch
     },
     {
-        name: "Cart",
+        name: "CART",
+        routeName: "cart",
         Icon: HiShoppingCart
     }
 

@@ -3,6 +3,7 @@ import getProductData from "../../lib/actions/productApis";
 import { ProductType } from "../types/product";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const ProductItem = () => {
   let [products, setProducts] = useState([]);
@@ -19,32 +20,22 @@ const ProductItem = () => {
   console.log(products);
   return (
     <>
-    <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {products.map((product: ProductType) => (
-        <div key={product.id} className=" bg-gray-400 gap-7">
-          <img 
-            src={product.image}
-            alt={product.title}
-            className=""
-          />
+      {products.map((product: ProductType, index: number) => (
+        <div className="bg-black p-4 my-4 flex items-center justify-between" key={index}>
+          {/* Image */}
+          <div className="flex-shrink-0 mr-4">
+            <img src={product.image} alt={product.title} width={100} height={100} />
+          </div>
 
+          {/* Description */}
+          <div>
+            <h2 className="text-white text-xl font-bold">{product.title}</h2>
+            <p className="text-gray-400">{product.description}</p>
+            <p className="text-gray-400">Price: ${product.price}</p>
+            <p className="text-gray-400">Category: {product.category}</p>
+          </div>
         </div>
-      ))
-
-      }
-
-    </div>
-     
-      {/* {products?.map((product: ProductType) => (
-        <>
-          <div>title:{product.title}</div>
-          <div>price:{product.price}</div>
-          <div>description:{product.description}</div>
-          <div> category:{product.category}</div>
-          <div>image:{product.image}</div>
-          <div>rating{product.rating.count}</div>
-        </>
-      ))} */}
+      ))}
     </>
   );
 };
