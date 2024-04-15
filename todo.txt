@@ -1,0 +1,2 @@
+loading size
+add hero section at the home page.
