@@ -8,13 +8,19 @@ import Link from "next/link";
 import { HiShoppingCart } from "react-icons/hi";
 import { FaFilter } from "react-icons/fa";
 import FilterSidebar from "../components/Sidebar";
+import { productCategory } from "../types/category";
 // import { DebounceFunction } from "../types/debounce";
 
 export default function Product() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [searchVal, setSearchVal] = useState<String>("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [selectedCategory, setSelectedCategory] = useState<productCategory>();
+  const [applyChanges, setApplyChanges] = useState(false);
 
+  console.log(priceRange);
+  console.log(selectedCategory);
   useEffect(() => {
     getProductData()
       .then((data: ProductType[]) => {
@@ -25,6 +31,7 @@ export default function Product() {
       });
   }, []);
 
+  console.log("APPLYYY CHANGES", applyChanges);
   // FUNCTION TO REDUCE TITLE NAME
   const truncateTitle = (text: string, maxWords: number) => {
     const words = text.split(" ");
@@ -38,9 +45,27 @@ export default function Product() {
   };
 
   const toggleSidebar = () => {
+    console.log("TOGGLE BTN");
     setSidebarOpen((prev) => !prev);
   };
+  const handlePriceChange = (max: number) => {
+    // Handle price change logic
+    console.log(max);
+    setPriceRange([priceRange[0], max]);
+  };
 
+  const handleSelectedCategory = (categoryName: productCategory) => {
+    console.log(categoryName);
+    setSelectedCategory(categoryName);
+  };
+
+  const onApplyChanges = () => {
+    setApplyChanges(true);
+  };
+
+  const onResetChanges = () => {
+    setApplyChanges(false);
+  };
   // const debounce: DebounceFunction<(...args: any[]) => any> = (func, delay) => {
   //   let debounceTimer: ReturnType<typeof setTimeout>;
 
@@ -52,13 +77,25 @@ export default function Product() {
   // };
 
   const filteredProduct = products.filter((product: ProductType) =>
-    product.title.toLowerCase().includes(searchVal?.toLowerCase())
+    product.title.toLowerCase().includes(searchVal.toLowerCase())
   );
+
+  const filterPriceRange = applyChanges
+  ? products.filter((product: ProductType) => {
+      const priceCondition =
+        product.price >= priceRange[0] && product.price <= priceRange[1];
+      const categoryCondition =
+        selectedCategory === undefined ||
+        product.category === selectedCategory;
+      return priceCondition && categoryCondition;
+    })
+  : products;
+
+  
+
   return (
     <div className={` ${sidebarOpen ? " ml-80" : " "}`}>
-      <div
-        className={`flex ml-7 items-center space-x-7 mb-4 `}
-      >
+      <div className={`flex ml-7 items-center space-x-7 mb-4 `}>
         {" "}
         {/* Add margin-bottom */}
         <FaFilter
@@ -72,13 +109,24 @@ export default function Product() {
           onChange={handleSearchChange}
         />
       </div>
-      {sidebarOpen && <FilterSidebar />}
+      {sidebarOpen && (
+        <FilterSidebar
+          priceRange={priceRange}
+          selectedCategory={selectedCategory}
+          applyChanges={applyChanges}
+          handlePriceChange={handlePriceChange}
+          handleSelectedCategory={handleSelectedCategory}
+          onApplyChanges={onApplyChanges}
+          onResetChanges={onResetChanges}
+        />
+      )}
       <div className="container mx-auto p-4">
         {products.length === 0 ? (
-          <Loader  height={32} width={"auto"}/>
+          <Loader height={32} width={"auto"} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {filteredProduct.map((product: ProductType) => (
+            {/* {filteredProduct.map((product: ProductType) => ( */}
+            {filterPriceRange.map((product: ProductType) => (
               <Link
                 href={`Products/${product.id}`}
                 className="group"
