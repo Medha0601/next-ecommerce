@@ -15,12 +15,13 @@ export default function Product() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [searchVal, setSearchVal] = useState<String>("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [selectedCategory, setSelectedCategory] = useState<productCategory>();
   const [applyChanges, setApplyChanges] = useState(false);
+  const [sortOption, setSortOption] = useState<"name" | "price">("name");
 
-  console.log(priceRange);
-  console.log(selectedCategory);
+ 
+
   useEffect(() => {
     getProductData()
       .then((data: ProductType[]) => {
@@ -66,6 +67,32 @@ export default function Product() {
   const onResetChanges = () => {
     setApplyChanges(false);
   };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
+
+   // Sort products based on the selected option
+   const sortedProducts = [...products].sort((a, b) => {
+    if (sortOption === "name") {
+      return a.title.localeCompare(b.title);
+    } else {
+      return a.price - b.price;
+    }
+  });
+
+  const filterProducts = (products: ProductType[]) => {
+    return products.filter((product: ProductType) => {
+      const priceCondition = product.price >= priceRange[0] && product.price <= priceRange[1]
+      const categoryCondition = !selectedCategory || product.category === selectedCategory
+      return priceCondition && categoryCondition
+    })
+  }
+
+  const filteredProduct = applyChanges? filterProducts(sortedProducts) : sortedProducts.filter((product: ProductType) =>
+    product.title.toLowerCase().includes(searchVal.toLowerCase()) 
+  )
   // const debounce: DebounceFunction<(...args: any[]) => any> = (func, delay) => {
   //   let debounceTimer: ReturnType<typeof setTimeout>;
 
@@ -76,22 +103,28 @@ export default function Product() {
   //   };
   // };
 
-  const filteredProduct = products.filter((product: ProductType) =>
-    product.title.toLowerCase().includes(searchVal.toLowerCase())
-  );
+ 
+// const filterProducts = (products: ProductType[]) => {
+//   return products.filter((product: ProductType) => {
+//     const priceCondition =
+//       product.price >= priceRange[0] && product.price <= priceRange[1];
+//     const categoryCondition =
+//       !selectedCategory || product.category === selectedCategory;
+//     return priceCondition && categoryCondition;
+//   });
+// };
 
-  const filterPriceRange = applyChanges
-  ? products.filter((product: ProductType) => {
-      const priceCondition =
-        product.price >= priceRange[0] && product.price <= priceRange[1];
-      const categoryCondition =
-        selectedCategory === undefined ||
-        product.category === selectedCategory;
-      return priceCondition && categoryCondition;
-    })
-  : products;
-
-  
+// const filteredProduct = applyChanges ? filterProducts(sortedProducts) : sortedProducts;
+  // const filterPriceRange = applyChanges
+  //   ? filteredProduct.filter((product: ProductType) => {
+  //       const priceCondition =
+  //         product.price >= priceRange[0] && product.price <= priceRange[1];
+  //       const categoryCondition =
+  //         selectedCategory === undefined ||
+  //         product.category === selectedCategory;
+  //       return priceCondition && categoryCondition;
+  //     })
+  //   : products;
 
   return (
     <div className={` ${sidebarOpen ? " ml-80" : " "}`}>
@@ -108,6 +141,18 @@ export default function Product() {
           value={searchVal}
           onChange={handleSearchChange}
         />
+        {/* NAME AND PRICE */}
+        <div>
+          <label className="text-white pr-2">Sort by:</label>
+          <select
+            className="bg-slate-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md py-1 px-3"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value as "name" | "price")}
+          >
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+          </select>
+        </div>
       </div>
       {sidebarOpen && (
         <FilterSidebar
@@ -118,6 +163,7 @@ export default function Product() {
           handleSelectedCategory={handleSelectedCategory}
           onApplyChanges={onApplyChanges}
           onResetChanges={onResetChanges}
+          closeSidebar={closeSidebar}
         />
       )}
       <div className="container mx-auto p-4">
@@ -125,8 +171,8 @@ export default function Product() {
           <Loader height={32} width={"auto"} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* {filteredProduct.map((product: ProductType) => ( */}
-            {filterPriceRange.map((product: ProductType) => (
+            {/* {filterPriceRange.map((product: ProductType) => ( */}
+            {filteredProduct.map((product: ProductType) => (
               <Link
                 href={`Products/${product.id}`}
                 className="group"

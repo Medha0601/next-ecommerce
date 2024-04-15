@@ -13,7 +13,8 @@ type filtertype = {
   handlePriceChange: (newPriceRange: number) => void;
   handleSelectedCategory: (newCategoryName: string) => () => void;
   onApplyChanges: () => void;
-  onResetChanges: () => void
+  onResetChanges: () => void;
+  closeSidebar: () => void;
 };
 const FilterSidebar = ({
   priceRange,
@@ -23,6 +24,7 @@ const FilterSidebar = ({
   handleSelectedCategory,
   onApplyChanges,
   onResetChanges,
+  closeSidebar,
 }: filtertype) => {
   const [categories, setCategories] = useState<productCategory>([]);
 
@@ -43,6 +45,22 @@ const FilterSidebar = ({
     <div className="absolute top-12 left-0 mt-10 h-full w-1/6 bg-black bg-opacity-80 text-white p-4">
       <div>
         {/* price */}
+        <button className="text-red-400" onClick={closeSidebar}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
         <h3 className="text-white">Price Range</h3>
         <div className="flex justify-between items-center">
           <span>${priceRange[0]}</span>
@@ -80,8 +98,20 @@ const FilterSidebar = ({
         </ul>
       </div>
 
-      <button onClick={onApplyChanges}>Apply</button>
-      <button onClick={onResetChanges}>Reset Filter</button>
+      <div className=" absolute bottom-1/2 right-0">
+        <button
+          onClick={onApplyChanges}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+        >
+          Apply
+        </button>
+        <button
+          onClick={onResetChanges}
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Reset Filter
+        </button>
+      </div>
     </div>
   );
 };
