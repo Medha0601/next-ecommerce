@@ -1,5 +1,5 @@
 "use client";
-import getProductData from "@/lib/actions/productApis";
+import {getProductData }from "@/lib/actions/productApis";
 import { useEffect, useState } from "react";
 import { ProductType } from "../types/product";
 import Loader from "../components/Loader";
@@ -94,38 +94,7 @@ export default function Product() {
     : sortedProducts.filter((product: ProductType) =>
         product.title.toLowerCase().includes(searchVal.toLowerCase())
       );
-  // const debounce: DebounceFunction<(...args: any[]) => any> = (func, delay) => {
-  //   let debounceTimer: ReturnType<typeof setTimeout>;
-
-  //   return function(...args: Parameters<typeof func>) {
-  //     const context = this as unknown as ThisParameterType<typeof func>;
-  //     clearTimeout(debounceTimer);
-  //     debounceTimer = setTimeout(() => func.apply(context, args), delay);
-  //   };
-  // };
-
-  // const filterProducts = (products: ProductType[]) => {
-  //   return products.filter((product: ProductType) => {
-  //     const priceCondition =
-  //       product.price >= priceRange[0] && product.price <= priceRange[1];
-  //     const categoryCondition =
-  //       !selectedCategory || product.category === selectedCategory;
-  //     return priceCondition && categoryCondition;
-  //   });
-  // };
-
-  // const filteredProduct = applyChanges ? filterProducts(sortedProducts) : sortedProducts;
-  // const filterPriceRange = applyChanges
-  //   ? filteredProduct.filter((product: ProductType) => {
-  //       const priceCondition =
-  //         product.price >= priceRange[0] && product.price <= priceRange[1];
-  //       const categoryCondition =
-  //         selectedCategory === undefined ||
-  //         product.category === selectedCategory;
-  //       return priceCondition && categoryCondition;
-  //     })
-  //   : products;
-
+  
   return (
     <div className={` ${sidebarOpen ? " ml-80" : " "}`}>
       <div className={`flex ml-7 items-center space-x-7 mb-4 `}>

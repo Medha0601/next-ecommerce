@@ -5,4 +5,5 @@ add hero section at the home page.
 2. cart crud operation-- for this i'll need db
 3. payment gateway
 4. backend, api creation and db models
+5. add debounce in the search field
 
