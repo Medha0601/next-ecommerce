@@ -1,7 +1,7 @@
 "use client";
 import { ProductType } from "@/app/types/product";
 import { getProductById } from "@/lib/actions/productApis";
-import { error } from "console";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface ProductDetailsProps {
@@ -11,9 +11,9 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ params }) => {
-  const [productDetail, setProductDetail] = useState<ProductType>({});
-
-  const id = params.ProductId;
+    const [productDetail, setProductDetail] = useState<ProductType>({});
+    const id = params.ProductId;
+    const router = useRouter()
 
   useEffect(() => {
     getProductById(id)
@@ -25,13 +25,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ params }) => {
       });
   }, []);
 
+
+  const handleBackBtn = () => {
+    console.log("hello")
+    router.push('/Products')
+  }
   return (
     <div>
-        <button className=" bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mx-4">
-          Back
-        </button>
+      <button className=" bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mx-4"
+      onClick={() => handleBackBtn()}
+      >
+        Back
+      </button>
       <div className=" flex container mx-auto py-8 justify-center ">
-        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="max-w-md">
             <img

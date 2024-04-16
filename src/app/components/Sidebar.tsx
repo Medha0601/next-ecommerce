@@ -27,8 +27,7 @@ const FilterSidebar = ({
   closeSidebar,
 }: filtertype) => {
   const [categories, setCategories] = useState<string[]>([]);
-  const [minValue, setMinValue] = useState(0)
-  const [maxValue, setMaxValue] = useState(1000)
+
   useEffect(() => {
     getCategoryData()
       .then((data: string[]) => {

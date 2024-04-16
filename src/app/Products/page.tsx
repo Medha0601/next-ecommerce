@@ -9,6 +9,7 @@ import { HiShoppingCart } from "react-icons/hi";
 import { FaFilter } from "react-icons/fa";
 import FilterSidebar from "../components/Sidebar";
 import { productCategory } from "../types/category";
+import Skeleton from "react-loading-skeleton";
 // import { DebounceFunction } from "../types/debounce";
 
 export default function Product() {
@@ -137,7 +138,8 @@ export default function Product() {
       )}
       <div className="container mx-auto p-4">
         {products.length === 0 ? (
-          <Loader height={32} width={"auto"} />
+          // <Loader height={32} width={"auto"} />
+          <Skeleton className="block md:flex-2 lg:flex bg-gray-800 rounded-lg overflow-hidden shadow-lg" />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* {filterPriceRange.map((product: ProductType) => ( */}

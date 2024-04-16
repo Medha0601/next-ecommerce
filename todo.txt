@@ -6,4 +6,12 @@ add hero section at the home page.
 3. payment gateway
 4. backend, api creation and db models
 5. add debounce in the search field
+6. loading skeleton
 
+
+
+
+username--pas----9HtCAQemAHERNAVC
+
+URL
+mongodb+srv://singhmedha2002:9HtCAQemAHERNAVC@cluster0.5vuverm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
