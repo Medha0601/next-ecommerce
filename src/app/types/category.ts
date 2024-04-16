@@ -1,3 +1,3 @@
 export interface productCategory {
-    categories : [string]
+  categories: string;
 }

@@ -5,6 +5,7 @@ import "rc-slider/assets/index.css";
 import getCategoryData from "@/lib/actions/productCategoryApi";
 import { productCategory } from "../types/category";
 import Loader from "./Loader";
+import ReactSlider from 'react-slider'
 
 type filtertype = {
   priceRange: [number, number];
@@ -26,11 +27,11 @@ const FilterSidebar = ({
   onResetChanges,
   closeSidebar,
 }: filtertype) => {
-  const [categories, setCategories] = useState<productCategory>([]);
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     getCategoryData()
-      .then((data: productCategory) => {
+      .then((data: string[]) => {
         setCategories(data);
       })
       .catch((error) => {
@@ -74,6 +75,15 @@ const FilterSidebar = ({
           defaultValue={priceRange} // Set initial default values
           onChange={handlePriceChange}
         />
+        {/* <ReactSlider
+          className="px-3"
+          defaultValue={priceRange}
+          min={0}
+          max={1000} // Set max price range as needed
+          ariaLabel={['Lower price', 'Upper price']}
+          minDistance={10}
+          onChange={(newRange: number[]) => handlePriceChange(newRange)} // Pass the handleSliderChange function
+        /> */}
       </div>
       <div>
         <h2>Categories</h2>

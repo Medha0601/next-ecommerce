@@ -16,11 +16,9 @@ export default function Product() {
   const [searchVal, setSearchVal] = useState<String>("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
-  const [selectedCategory, setSelectedCategory] = useState<productCategory>();
+  const [selectedCategory, setSelectedCategory] = useState<string| undefined>();
   const [applyChanges, setApplyChanges] = useState(false);
   const [sortOption, setSortOption] = useState<"name" | "price">("name");
-
- 
 
   useEffect(() => {
     getProductData()
@@ -55,7 +53,7 @@ export default function Product() {
     setPriceRange([priceRange[0], max]);
   };
 
-  const handleSelectedCategory = (categoryName: productCategory) => {
+  const handleSelectedCategory = (categoryName: string) => {
     console.log(categoryName);
     setSelectedCategory(categoryName);
   };
@@ -72,9 +70,8 @@ export default function Product() {
     setSidebarOpen(false);
   };
 
-
-   // Sort products based on the selected option
-   const sortedProducts = [...products].sort((a, b) => {
+  // Sort products based on the selected option
+  const sortedProducts = [...products].sort((a, b) => {
     if (sortOption === "name") {
       return a.title.localeCompare(b.title);
     } else {
@@ -84,15 +81,19 @@ export default function Product() {
 
   const filterProducts = (products: ProductType[]) => {
     return products.filter((product: ProductType) => {
-      const priceCondition = product.price >= priceRange[0] && product.price <= priceRange[1]
-      const categoryCondition = !selectedCategory || product.category === selectedCategory
-      return priceCondition && categoryCondition
-    })
-  }
+      const priceCondition =
+        product.price >= priceRange[0] && product.price <= priceRange[1];
+      const categoryCondition =
+        !selectedCategory || product.category === selectedCategory;
+      return priceCondition && categoryCondition;
+    });
+  };
 
-  const filteredProduct = applyChanges? filterProducts(sortedProducts) : sortedProducts.filter((product: ProductType) =>
-    product.title.toLowerCase().includes(searchVal.toLowerCase()) 
-  )
+  const filteredProduct = applyChanges
+    ? filterProducts(sortedProducts)
+    : sortedProducts.filter((product: ProductType) =>
+        product.title.toLowerCase().includes(searchVal.toLowerCase())
+      );
   // const debounce: DebounceFunction<(...args: any[]) => any> = (func, delay) => {
   //   let debounceTimer: ReturnType<typeof setTimeout>;
 
@@ -103,18 +104,17 @@ export default function Product() {
   //   };
   // };
 
- 
-// const filterProducts = (products: ProductType[]) => {
-//   return products.filter((product: ProductType) => {
-//     const priceCondition =
-//       product.price >= priceRange[0] && product.price <= priceRange[1];
-//     const categoryCondition =
-//       !selectedCategory || product.category === selectedCategory;
-//     return priceCondition && categoryCondition;
-//   });
-// };
+  // const filterProducts = (products: ProductType[]) => {
+  //   return products.filter((product: ProductType) => {
+  //     const priceCondition =
+  //       product.price >= priceRange[0] && product.price <= priceRange[1];
+  //     const categoryCondition =
+  //       !selectedCategory || product.category === selectedCategory;
+  //     return priceCondition && categoryCondition;
+  //   });
+  // };
 
-// const filteredProduct = applyChanges ? filterProducts(sortedProducts) : sortedProducts;
+  // const filteredProduct = applyChanges ? filterProducts(sortedProducts) : sortedProducts;
   // const filterPriceRange = applyChanges
   //   ? filteredProduct.filter((product: ProductType) => {
   //       const priceCondition =
