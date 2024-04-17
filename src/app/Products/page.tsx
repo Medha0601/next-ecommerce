@@ -16,7 +16,8 @@ export default function Product() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [searchVal, setSearchVal] = useState<String>("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [minPriceValue, setMinPriceValue] = useState<number>(0);
+  const [maxPriceValue, setMaxPriceValue] = useState<number>(1000);
   const [selectedCategory, setSelectedCategory] = useState<string| undefined>();
   const [applyChanges, setApplyChanges] = useState(false);
   const [sortOption, setSortOption] = useState<"name" | "price">("name");
@@ -31,8 +32,6 @@ export default function Product() {
       });
   }, []);
 
-  console.log("APPLYYY CHANGES", applyChanges);
-  // FUNCTION TO REDUCE TITLE NAME
   const truncateTitle = (text: string, maxWords: number) => {
     const words = text.split(" ");
     if (words.length > maxWords) {
@@ -48,12 +47,11 @@ export default function Product() {
     console.log("TOGGLE BTN");
     setSidebarOpen((prev) => !prev);
   };
-  const handlePriceChange = (max: number) => {
-    // Handle price change logic
-    console.log(max);
-    setPriceRange([priceRange[0], max]);
-  };
 
+  const handlePriceChange = (e) => {
+    setMinPriceValue(e.minValue);
+    setMaxPriceValue(e.maxValue);
+  };
   const handleSelectedCategory = (categoryName: string) => {
     console.log(categoryName);
     setSelectedCategory(categoryName);
@@ -83,7 +81,7 @@ export default function Product() {
   const filterProducts = (products: ProductType[]) => {
     return products.filter((product: ProductType) => {
       const priceCondition =
-        product.price >= priceRange[0] && product.price <= priceRange[1];
+        product.price >= minPriceValue && product.price <= maxPriceValue;
       const categoryCondition =
         !selectedCategory || product.category === selectedCategory;
       return priceCondition && categoryCondition;
@@ -126,7 +124,9 @@ export default function Product() {
       </div>
       {sidebarOpen && (
         <FilterSidebar
-          priceRange={priceRange}
+          // priceRange={priceRange}
+          minPriceValue={minPriceValue}
+          maxPriceValue = {maxPriceValue}
           selectedCategory={selectedCategory}
           applyChanges={applyChanges}
           handlePriceChange={handlePriceChange}

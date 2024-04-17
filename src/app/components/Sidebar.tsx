@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import InputRange from "rc-slider";
 import "rc-slider/assets/index.css";
-import {getCategoryData} from "@/lib/actions/productApis";
+import { getCategoryData } from "@/lib/actions/productApis";
 import { productCategory } from "../types/category";
 import Loader from "./Loader";
-import Slider from 'react-slider'
+// import Slider from "react-slider";
+import MultiRangeSlider from "multi-range-slider-react";
+
 
 type filtertype = {
-  priceRange: [number, number];
-  selectedCategory: String;
-  applyChanges: Boolean;
+  // priceRange: [number, number];
+  minPriceValue: number;
+  maxPriceValue:number
   handlePriceChange: (newPriceRange: number) => void;
   handleSelectedCategory: (newCategoryName: string) => () => void;
   onApplyChanges: () => void;
@@ -17,9 +19,8 @@ type filtertype = {
   closeSidebar: () => void;
 };
 const FilterSidebar = ({
-  priceRange,
-  selectedCategory,
-  applyChanges,
+  minPriceValue,
+  maxPriceValue,
   handlePriceChange,
   handleSelectedCategory,
   onApplyChanges,
@@ -38,13 +39,10 @@ const FilterSidebar = ({
       });
   }, []);
 
-  console.log(priceRange);
-  console.log(selectedCategory);
-
   return (
     <div className="absolute top-12 left-0 mt-10 h-full w-1/6 bg-black bg-opacity-80 text-white p-4">
       <div>
-        {/* price */}
+
         <button className="text-red-400" onClick={closeSidebar}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -63,20 +61,30 @@ const FilterSidebar = ({
         </button>
         <h3 className="text-white">Price Range</h3>
         <div className="flex justify-between items-center">
-          <span>${priceRange[0]}</span>
-          <span>${priceRange[1]}</span>
+          <span>${minPriceValue}</span>
+          <span>${maxPriceValue}</span>
         </div>
-        <InputRange
+        {/* <InputRange
           className=" px-3 "
           min={0}
           max={1000} // Set max price range as needed
           step={50} // Adjust step as needed
           defaultValue={priceRange} // Set initial default values
           onChange={handlePriceChange}
+        /> */}
+        <MultiRangeSlider
+          min={0}
+          max={1000}
+          ruler={false}
+          step={10}
+          minValue={minPriceValue}
+          maxValue={maxPriceValue}
+          onInput={(e) => {
+            handlePriceChange(e);
+          }}
         />
-       
       </div>
-      <div>
+      <div className="py-3 font-bold">
         <h2>Categories</h2>
         <ul className="*:rounded-full *:border *:border-sky-100 *:bg-sky-50 *:px-2 *:py-0.5 dark:text-sky-300 dark:*:border-sky-500/15 dark:*:bg-sky-500/10 ...">
           {!categories ? (
@@ -99,10 +107,10 @@ const FilterSidebar = ({
         </ul>
       </div>
 
-      <div className=" absolute bottom-1/2 right-0">
+      <div className=" absolute right-0">
         <button
           onClick={onApplyChanges}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 my-3"
         >
           Apply
         </button>

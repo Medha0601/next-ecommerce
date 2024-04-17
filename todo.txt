@@ -15,3 +15,21 @@ username--pas----9HtCAQemAHERNAVC
 
 URL
 mongodb+srv://singhmedha2002:9HtCAQemAHERNAVC@cluster0.5vuverm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+
+
+
+PRICE RANGEE
+<h3 className="text-white">Price Range</h3>
+        <div className="flex justify-between items-center">
+          <span>${priceRange[0]}</span>
+          <span>${priceRange[1]}</span>
+        </div>
+        <InputRange
+          className=" px-3 "
+          min={0}
+          max={1000} // Set max price range as needed
+          step={50} // Adjust step as needed
+          defaultValue={priceRange} // Set initial default values
+          onChange={handlePriceChange}
+        />
