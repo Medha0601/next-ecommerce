@@ -9,6 +9,12 @@ add hero section at the home page.
 6. loading skeleton
 
 
+SCHEMAaa
+1. user.
+2. product
+3. cart
+
+
 
 
 username--pas----9HtCAQemAHERNAVC
