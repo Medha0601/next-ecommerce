@@ -1,14 +1,14 @@
 "use client";
 import {getProductData }from "@/lib/actions/productApis";
 import { useEffect, useState } from "react";
-import { ProductType } from "../types/product";
+import { ProductType } from "../types/index";
 import Loader from "../components/Loader";
 import ProductItem from "./ProductItem";
 import Link from "next/link";
 import { HiShoppingCart } from "react-icons/hi";
 import { FaFilter } from "react-icons/fa";
 import FilterSidebar from "../components/Sidebar";
-import { productCategory } from "../types/category";
+import { productCategory } from "../types/index";
 import Skeleton from "react-loading-skeleton";
 // import { DebounceFunction } from "../types/debounce";
 

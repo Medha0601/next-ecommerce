@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ProductType } from "../types/product";
+import { ProductType } from "../types/index";
 
 export default function ProductItem({ product }: { product: ProductType }) {
   const truncateDescription = (text: string, maxWords: number) => {
