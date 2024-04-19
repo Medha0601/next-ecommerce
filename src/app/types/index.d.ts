@@ -20,6 +20,22 @@ interface productCategory {
 }
 
 
+// USER CRUD
+interface createUserType{
+    clerkId: string,
+    email: string,
+    username: string,
+    firstName: string,
+    lastName: string;
+    cartItem?: number | undefined 
+}
+
+interface UpdateUserType {
+    firstName: string,
+    lastName: string,
+    username: string,
+}
 
 
-export { DebounceFunction, ProductType, productCategory}
+
+export { DebounceFunction, ProductType, productCategory, createUserType, UpdateUserType}

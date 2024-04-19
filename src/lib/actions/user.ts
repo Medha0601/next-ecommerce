@@ -4,11 +4,12 @@ import { json } from "stream/consumers";
 import { connectToDatabase } from "../database/db";
 import User from "../database/models/user.model";
 import { revalidatePath } from "next/cache";
+import { UpdateUserType, createUserType } from "@/app/types";
 
 // CRUD operation for user, using webhook
 
 // create
-export async function createUser(user) {
+export async function createUser(user: createUserType) {
   try {
     await connectToDatabase();
 
@@ -21,7 +22,7 @@ export async function createUser(user) {
 }
 
 // Read
-export async function getUserById(userId) {
+export async function getUserById(userId: string) {
   try {
     await connectToDatabase();
 
@@ -36,7 +37,7 @@ export async function getUserById(userId) {
 }
 
 // Update
-export async function updateUser(clerkId: string, user) {
+export async function updateUser(clerkId: string, user: UpdateUserType) {
   try {
     await connectToDatabase();
     // findOneAndUpdate(filter, update, options)
@@ -54,7 +55,7 @@ export async function updateUser(clerkId: string, user) {
 
 
 // DELETE
-export async function deleteUser(checkId: string) {
+export async function deleteUser(clerkId: string) {
     try {   
         await connectToDatabase();
 

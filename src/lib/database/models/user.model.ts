@@ -9,7 +9,7 @@ export interface TUser extends Document {
   username: string;
   firstName: string;
   lastName: string;
-  cartItem?: number;
+  cartItem?: number | undefined;
 }
 
 const UserSchema: Schema<TUser> = new Schema<TUser>({
