@@ -1,5 +1,5 @@
 "use client";
-import { ProductType } from "@/app/types/product";
+import { ProductType } from "@/app/types/index";
 import { getProductById } from "@/lib/actions/productApis";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -11,12 +11,13 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ params }) => {
-    const [productDetail, setProductDetail] = useState<ProductType>({});
+    const [productDetail, setProductDetail] = useState<Partial<ProductType>>({}); ;
     const id = params.ProductId;
     const router = useRouter()
 
   useEffect(() => {
-    getProductById(id)
+    const productId = parseInt(id, 10); 
+    getProductById(productId)
       .then((data: ProductType) => {
         setProductDetail(data);
       })

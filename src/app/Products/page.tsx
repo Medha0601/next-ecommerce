@@ -1,6 +1,6 @@
 "use client";
-import {getProductData }from "@/lib/actions/productApis";
-import { useEffect, useState } from "react";
+import { getProductData } from "@/lib/actions/productApis";
+import { ChangeEvent, useEffect, useState } from "react";
 import { ProductType } from "../types/index";
 import Loader from "../components/Loader";
 import ProductItem from "./ProductItem";
@@ -14,11 +14,13 @@ import Skeleton from "react-loading-skeleton";
 
 export default function Product() {
   const [products, setProducts] = useState<ProductType[]>([]);
-  const [searchVal, setSearchVal] = useState<String>("");
+  const [searchVal, setSearchVal] = useState<string>("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [minPriceValue, setMinPriceValue] = useState<number>(0);
   const [maxPriceValue, setMaxPriceValue] = useState<number>(1000);
-  const [selectedCategory, setSelectedCategory] = useState<string| undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    string | undefined
+  >();
   const [applyChanges, setApplyChanges] = useState(false);
   const [sortOption, setSortOption] = useState<"name" | "price">("name");
 
@@ -48,14 +50,18 @@ export default function Product() {
     setSidebarOpen((prev) => !prev);
   };
 
-  const handlePriceChange = (e) => {
-    setMinPriceValue(e.minValue);
-    setMaxPriceValue(e.maxValue);
+  const handlePriceChange = (newPriceRange: { minValue: number; maxValue: number }) => {
+    setMinPriceValue(newPriceRange.minValue);
+    setMaxPriceValue(newPriceRange.maxValue);
   };
-  const handleSelectedCategory = (categoryName: string) => {
+  
+const handleSelectedCategory = (categoryName: string):()=> void => {
+  return () => {
     console.log(categoryName);
     setSelectedCategory(categoryName);
   };
+};
+
 
   const onApplyChanges = () => {
     setApplyChanges(true);
@@ -93,7 +99,7 @@ export default function Product() {
     : sortedProducts.filter((product: ProductType) =>
         product.title.toLowerCase().includes(searchVal.toLowerCase())
       );
-  
+
   return (
     <div className={` ${sidebarOpen ? " ml-80" : " "}`}>
       <div className={`flex ml-7 items-center space-x-7 mb-4 `}>
@@ -126,10 +132,10 @@ export default function Product() {
         <FilterSidebar
           // priceRange={priceRange}
           minPriceValue={minPriceValue}
-          maxPriceValue = {maxPriceValue}
+          maxPriceValue={maxPriceValue}
           selectedCategory={selectedCategory}
-          applyChanges={applyChanges}
-          handlePriceChange={handlePriceChange}
+          handlePriceChange={({ minValue, maxValue }) => handlePriceChange({ minValue, maxValue })}
+
           handleSelectedCategory={handleSelectedCategory}
           onApplyChanges={onApplyChanges}
           onResetChanges={onResetChanges}

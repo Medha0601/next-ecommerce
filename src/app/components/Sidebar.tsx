@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import InputRange from "rc-slider";
 import "rc-slider/assets/index.css";
 import { getCategoryData } from "@/lib/actions/productApis";
-import { productCategory } from "../types/category";
+// import { productCategory } from "../types/category";
 import Loader from "./Loader";
 // import Slider from "react-slider";
 import MultiRangeSlider from "multi-range-slider-react";
@@ -11,8 +11,9 @@ import MultiRangeSlider from "multi-range-slider-react";
 type filtertype = {
   // priceRange: [number, number];
   minPriceValue: number;
+  selectedCategory: string | undefined;
   maxPriceValue:number
-  handlePriceChange: (newPriceRange: number) => void;
+  handlePriceChange: (newPriceRange:{minValue: number, maxValue: number} ) => void;
   handleSelectedCategory: (newCategoryName: string) => () => void;
   onApplyChanges: () => void;
   onResetChanges: () => void;

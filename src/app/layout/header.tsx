@@ -15,7 +15,7 @@ export default function Header() {
         <div className="flex items-center gap-8">
         {headerList.map((headerData) => (
           
-          <Link href={`${headerData.routeName}`}>
+          <Link key={headerData.name} href={`${headerData.routeName}`}>
           <HeaderItem
           key={headerData.name}
           name={headerData.name}

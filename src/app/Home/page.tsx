@@ -2,7 +2,7 @@ import { currentUser } from "@clerk/nextjs/server"
 import userAvtar from "@/assets/Images/userAvtar.png"
 import Image from "next/image";
 
-export const Dashboard = async () => {
+ const Dashboard = async () => {
     const user = await currentUser();
     return (
         <a href="#" className="group block max-w-sm mx-auto rounded-lg p-6 ring-2 ring-slate-500/50 hover:bg-blue-300">
@@ -18,3 +18,4 @@ export const Dashboard = async () => {
     );
 };
 
+export default Dashboard

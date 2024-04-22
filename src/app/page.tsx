@@ -1,6 +1,7 @@
 import { UserButton } from "@clerk/nextjs";
 import Header from "./layout/header";
-import { Dashboard } from "./Home/page";
+import Dashboard from "./Home/page";
+
 
 // import ProductItem from "./Products/productItem";
 
